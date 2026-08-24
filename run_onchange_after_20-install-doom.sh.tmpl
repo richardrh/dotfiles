@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Re-run Doom sync when its module or package declarations change.
+# init hash: {{ include "dot_config/doom/init.el" | sha256sum }}
+# packages hash: {{ include "dot_config/doom/packages.el" | sha256sum }}
+emacs_dir="${XDG_CONFIG_HOME:-$HOME/.config}/emacs"
+export PATH="$HOME/.local/share/mise/shims:$emacs_dir/bin:$PATH"
+
+if [[ -e "$emacs_dir" && ! -d "$emacs_dir/.git" ]]; then
+    printf 'Cannot install Doom: %s exists and is not a Git repository.\n' "$emacs_dir" >&2
+    exit 1
+fi
+
+if [[ ! -d "$emacs_dir/.git" ]]; then
+    git clone --depth 1 https://github.com/doomemacs/doomemacs.git "$emacs_dir"
+    "$emacs_dir/bin/doom" -! install --no-config --env
+else
+    "$emacs_dir/bin/doom" sync
+fi

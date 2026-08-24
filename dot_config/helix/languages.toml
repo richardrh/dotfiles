@@ -1,0 +1,47 @@
+[language-server.dart]
+command = "dart"
+args = ["language-server", "--client-id=helix"]
+
+# Initialization options consumed directly by the Dart analysis server.
+[language-server.dart.config]
+suggestFromUnimportedLibraries = true
+
+# Runtime settings requested by the server through workspace/configuration.
+[language-server.dart.config.dart]
+completeFunctionCalls = true
+documentation = "full"
+enableSdkFormatter = true
+enableSnippets = true
+showTodos = true
+updateImportsOnRename = true
+
+[language-server.dart.config.dart.inlayHints]
+dotShorthandTypes = true
+parameterNames = "literal"
+parameterTypes = true
+returnTypes = true
+typeArguments = true
+variableTypes = true
+
+[[language]]
+name = "dart"
+auto-format = true
+language-servers = ["dart"]
+
+[language.debugger]
+name = "dart"
+transport = "stdio"
+command = "dart"
+args = ["debug_adapter"]
+
+[[language.debugger.templates]]
+name = "Launch Dart program"
+request = "launch"
+completion = [{ name = "entrypoint", completion = "filename", default = "bin/main.dart" }]
+args = { program = "{0}", debugSdkLibraries = false, debugExternalPackageLibraries = false, evaluateToStringInDebugViews = true }
+
+[[language.debugger.templates]]
+name = "Attach to Dart VM Service"
+request = "attach"
+completion = [{ name = "VM Service URI" }]
+args = { vmServiceUri = "{0}", debugSdkLibraries = false, debugExternalPackageLibraries = false }

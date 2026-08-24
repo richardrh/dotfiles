@@ -1,0 +1,42 @@
+[tools]
+dart = { version = "latest", checksum_url = "https://storage.googleapis.com/dart-archive/channels/stable/release/{{`{{ version }}`}}/sdk/dartsdk-{{`{{ os() }}`}}-{{`{{ arch() }}`}}-release.zip.sha256sum", url = "https://storage.googleapis.com/dart-archive/channels/stable/release/{{`{{ version }}`}}/sdk/dartsdk-{{`{{ os() }}`}}-{{`{{ arch() }}`}}-release.zip", version_expr = 'fromJSON(body).prefixes | filter({ # matches "^channels/stable/release/(\\d+\\.\\d+\\.\\d+)/$" }) | map({split(#, "/")[3]}) | sortVersions()', version_list_url = "https://storage.googleapis.com/storage/v1/b/dart-archive/o?prefix=channels/stable/release/&delimiter=/" }
+go = "1.27.0"
+rust = "stable"
+python = "3.14"
+uv = "latest"
+node = "lts"
+pnpm = "11.22.0"
+bun = "latest"
+deno = "latest"
+java = "temurin-21"
+graalvm = "latest"
+dotnet = "10.0.400"
+clojure = "latest"
+
+helm = "latest"
+kustomize = "latest"
+k9s = "latest"
+k3d = "latest"
+duckdb = "latest"
+kopia = "latest"
+sops = "latest"
+age = "latest"
+herdr = "latest"
+superfile = "latest"
+jd = "latest"
+
+rust-analyzer = "latest"
+"go:golang.org/x/tools/gopls" = "latest"
+"npm:typescript-language-server" = { version = "latest", pnpm_args = "typescript@6.0.3" }
+"npm:basedpyright" = "latest"
+"dotnet:csharp-ls" = "latest"
+"github:fwcd/kotlin-language-server" = { version = "latest", asset_pattern = "server.zip" }
+{{ if eq .chezmoi.os "darwin" -}}
+"github:clojure-lsp/clojure-lsp" = { version = "latest", asset_pattern = "clojure-lsp-native-macos-{{ if eq .chezmoi.arch "arm64" }}aarch64{{ else }}amd64{{ end }}.zip" }
+{{ else if eq .chezmoi.os "linux" -}}
+"github:clojure-lsp/clojure-lsp" = { version = "latest", asset_pattern = "clojure-lsp-native-linux-{{ if eq .chezmoi.arch "arm64" }}aarch64{{ else }}amd64{{ end }}.zip" }
+{{ end -}}
+"http:jdtls" = { version = "1.60.0", url = "https://www.eclipse.org/downloads/download.php?file=/jdtls/milestones/1.60.0/jdt-language-server-1.60.0-202606262232.tar.gz", checksum = "sha256:e94c303d8198f977930803582738771fd18c52c5492878410bf222b1aa81ef1d", bin_path = "bin" }
+
+[settings.npm]
+package_manager = "pnpm"

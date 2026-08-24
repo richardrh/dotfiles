@@ -1,0 +1,8 @@
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+[url "git@gitlab.com:"]
+	insteadOf = https://gitlab.com/
