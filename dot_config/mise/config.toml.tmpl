@@ -27,8 +27,14 @@ jd = "latest"
 
 rust-analyzer = "latest"
 "go:golang.org/x/tools/gopls" = "latest"
+"go:github.com/sqls-server/sqls" = "latest"
+"go:github.com/google/yamlfmt/cmd/yamlfmt" = "latest"
 "npm:typescript-language-server" = { version = "latest", pnpm_args = "typescript@6.0.3" }
 "npm:basedpyright" = "latest"
+"npm:bash-language-server" = "latest"
+"npm:yaml-language-server" = "latest"
+"cargo:https://github.com/Feel-ix-343/markdown-oxide.git" = { version = "branch:main", crate = "markdown-oxide" }
+ruff = "latest"
 "dotnet:csharp-ls" = "latest"
 "github:fwcd/kotlin-language-server" = { version = "latest", asset_pattern = "server.zip" }
 {{ if eq .chezmoi.os "darwin" -}}

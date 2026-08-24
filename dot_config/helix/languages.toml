@@ -23,6 +23,70 @@ returnTypes = true
 typeArguments = true
 variableTypes = true
 
+[language-server.basedpyright]
+command = "basedpyright-langserver"
+args = ["--stdio"]
+
+[language-server.sqls]
+command = "sqls"
+
+[[language]]
+name = "go"
+auto-format = true
+language-servers = ["gopls"]
+
+[[language]]
+name = "java"
+auto-format = true
+language-servers = ["jdtls"]
+
+[[language]]
+name = "c-sharp"
+auto-format = true
+language-servers = ["csharp-ls"]
+
+[[language]]
+name = "typescript"
+auto-format = true
+language-servers = ["typescript-language-server"]
+
+[[language]]
+name = "tsx"
+auto-format = true
+language-servers = ["typescript-language-server"]
+
+[[language]]
+name = "javascript"
+auto-format = true
+language-servers = ["typescript-language-server"]
+
+[[language]]
+name = "jsx"
+auto-format = true
+language-servers = ["typescript-language-server"]
+
+[[language]]
+name = "python"
+auto-format = true
+language-servers = ["basedpyright", { name = "ruff", only-features = ["diagnostics", "code-action", "format"] }]
+
+[[language]]
+name = "bash"
+language-servers = ["bash-language-server"]
+
+[[language]]
+name = "yaml"
+auto-format = true
+language-servers = ["yaml-language-server"]
+
+[[language]]
+name = "markdown"
+language-servers = ["markdown-oxide"]
+
+[[language]]
+name = "sql"
+language-servers = ["sqls"]
+
 [[language]]
 name = "dart"
 auto-format = true
