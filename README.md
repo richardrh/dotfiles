@@ -13,12 +13,12 @@ Chezmoi applies the shell, Git, Doom Emacs, Ghostty, Helix, and mise
 configuration. The `run_onchange_after_05-install-doom.sh.tmpl` script
 initializes Doom, and `run_onchange_after_10-install-mise-tools.sh.tmpl`
 installs mise-managed tools after the configuration files are applied.
-The first apply also creates `~/.ssh/id_ed25519` if it does not exist and
-configures GitHub/GitLab SSH host defaults. If `gh` or `glab` is already
-authenticated, the public key is registered with that service; otherwise,
-authenticate with `gh auth login` or `glab auth login` and add
-`~/.ssh/id_ed25519.pub`. The private key stays on the machine. The unattended
-key has no passphrase; replace it with a passphrase-protected key if required.
+On the Fedora image, the first-login `workstation-setup` terminal configures
+SSH, interactively runs `gh auth login` and `glab auth login`, registers the
+public key with both services, and runs `sudo tailscale up`. It creates
+`~/.ssh/id_ed25519` only when requested; the SSH key's passphrase is entered
+interactively and the private key stays on the machine. Run `workstation-setup`
+again later to repeat any skipped step.
 
 Preview and apply later changes with:
 
