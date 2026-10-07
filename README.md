@@ -10,9 +10,11 @@ chezmoi init --apply git@github.com:richardrh/dotfiles.git
 ```
 
 Chezmoi applies the shell, Git, Doom Emacs, Ghostty, Helix, and mise
-configuration. The `run_onchange_after_05-install-doom.sh.tmpl` script
-initializes Doom, and `run_onchange_after_10-install-mise-tools.sh.tmpl`
-installs mise-managed tools after the configuration files are applied.
+configuration. The `run_once_after_03-install-nerd-font.sh.tmpl` script
+ensures JetBrainsMono Nerd Font is available. The
+`run_onchange_after_05-install-doom.sh.tmpl` script initializes Doom, and
+`run_onchange_after_10-install-mise-tools.sh.tmpl` installs all mise-managed
+tools, including Oh My Pi and Herdr, after the configuration files are applied.
 On the Fedora image, the first-login `workstation-setup` terminal configures
 SSH, interactively runs `gh auth login` and `glab auth login`, registers the
 public key with both services, and runs `sudo tailscale up`. It creates
