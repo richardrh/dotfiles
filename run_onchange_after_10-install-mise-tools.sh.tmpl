@@ -4,3 +4,8 @@ set -euo pipefail
 # Re-run when the mise source configuration changes.
 # config hash: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
 MISE_FETCH_REMOTE_VERSIONS_TIMEOUT=30 mise install --yes
+missing_tools="$(mise ls --missing --no-header)"
+if [[ -n "$missing_tools" ]]; then
+    printf 'mise left configured tools uninstalled:\n%s\n' "$missing_tools" >&2
+    exit 1
+fi

@@ -4,5 +4,5 @@
 (set-vim-keybindings!)
 
 (keymap (global)
-        (normal (space (i ":imenu")
-                       (I ":imenu-workspace"))))
+        (normal (space (i ":lsp-or-syntax-symbol-picker")
+                       (I ":lsp-or-syntax-workspace-symbol-picker"))))

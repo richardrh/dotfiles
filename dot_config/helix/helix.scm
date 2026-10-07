@@ -1,3 +1,2 @@
-(require (only-in "imenu-hx/imenu.scm" imenu imenu-workspace))
-
-(provide imenu imenu-workspace)
+;; Custom imenu commands are not part of the image's Steel runtime.
+;; Keep this file loadable; keybindings use Helix's built-in symbol pickers.
