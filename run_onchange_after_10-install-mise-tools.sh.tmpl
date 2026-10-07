@@ -4,6 +4,12 @@ set -euo pipefail
 # Re-run when the mise source configuration changes.
 # config hash: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
 export MISE_FETCH_REMOTE_VERSIONS_TIMEOUT=30
+if [[ -z "${GITHUB_TOKEN:-}" ]] &&
+   command -v gh >/dev/null 2>&1 &&
+   gh auth status >/dev/null 2>&1; then
+    export GITHUB_TOKEN="$(gh auth token)"
+fi
+
 mise install --yes
 missing_tools="$(mise ls --missing --no-header)"
 if [[ -n "$missing_tools" ]]; then
