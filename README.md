@@ -10,9 +10,9 @@ chezmoi init --apply git@github.com:richardrh/dotfiles.git
 ```
 
 Chezmoi applies the shell, Git, Doom Emacs, Ghostty, Helix, and mise
-configuration. The `run_onchange_after_10-install-mise-tools.sh.tmpl` script
-installs mise-managed tools, and `run_onchange_after_20-install-doom.sh.tmpl`
-initializes Doom after the configuration files are applied.
+configuration. The `run_onchange_after_05-install-doom.sh.tmpl` script
+initializes Doom, and `run_onchange_after_10-install-mise-tools.sh.tmpl`
+installs mise-managed tools after the configuration files are applied.
 Secrets and machine state do not belong in this repository.
 
 Preview and apply later changes with:
