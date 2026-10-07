@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+font_family='JetBrainsMono Nerd Font Mono'
+font_version=3.5.1
+font_sha256=fab782a66f7d3019da64f6572db9fc5d3a4bcb19f9fa13e2d8a62e3693d6396e
+archive_url="https://github.com/ryanoasis/nerd-fonts/releases/download/v${font_version}/JetBrainsMono.zip"
+
+if command -v fc-match >/dev/null 2>&1 &&
+   fc-match -f '%{family}\n' "$font_family" | grep -Fq 'JetBrainsMono Nerd Font'; then
+    exit 0
+fi
+
+if [[ "{{ .chezmoi.os }}" == "darwin" ]] && command -v brew >/dev/null 2>&1; then
+    brew install --cask font-jetbrains-mono-nerd-font
+    exit 0
+fi
+
+tmp_dir="$(mktemp -d)"
+trap 'rm -rf "$tmp_dir"' EXIT
+archive="$tmp_dir/JetBrainsMono.zip"
+curl --fail --location --retry 3 "$archive_url" --output "$archive"
+
+if command -v sha256sum >/dev/null 2>&1; then
+    printf '%s  %s\n' "$font_sha256" "$archive" | sha256sum --check --strict
+else
+    printf '%s  %s\n' "$font_sha256" "$archive" | shasum --algorithm 256 --check --strict
+fi
+
+unzip -q "$archive" -d "$tmp_dir/fonts"
+if [[ "{{ .chezmoi.os }}" == "darwin" ]]; then
+    font_dir="$HOME/Library/Fonts"
+else
+    font_dir="${XDG_DATA_HOME:-$HOME/.local/share}/fonts/JetBrainsMono"
+fi
+install -d -m 755 "$font_dir"
+find "$tmp_dir/fonts" -type f -name '*.ttf' -exec install -m 644 {} "$font_dir" \;
+
+if command -v fc-cache >/dev/null 2>&1; then
+    fc-cache -f "$font_dir"
+fi
