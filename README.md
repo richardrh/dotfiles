@@ -13,7 +13,11 @@ Chezmoi applies the shell, Git, Doom Emacs, Ghostty, Helix, and mise
 configuration. The `run_onchange_after_05-install-doom.sh.tmpl` script
 initializes Doom, and `run_onchange_after_10-install-mise-tools.sh.tmpl`
 installs mise-managed tools after the configuration files are applied.
-Secrets and machine state do not belong in this repository.
+The first apply also creates `~/.ssh/id_ed25519` if it does not exist and
+configures GitHub/GitLab SSH host defaults. If `gh` or `glab` is already
+authenticated, the public key is registered with that service; otherwise,
+authenticate with `gh auth login` or `glab auth login` and add
+`~/.ssh/id_ed25519.pub`. The private key stays on the machine.
 
 Preview and apply later changes with:
 
