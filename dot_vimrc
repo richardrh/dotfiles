@@ -1,0 +1,21 @@
+" Tokyo Night-inspired minimal Vim setup.
+if has('termguicolors')
+  set termguicolors
+endif
+set background=dark
+colorscheme tokyonight
+
+syntax enable
+set number
+set cursorline
+set signcolumn=yes
+set noshowmode
+set laststatus=2
+set mouse=a
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set smartindent
+set hlsearch
+set incsearch
+set wildmenu
