@@ -43,6 +43,28 @@ chezmoi apply
 apply, run `chezmoi update`. The image's chezmoi user services also update
 dotfiles automatically.
 
+### Sway touchpad settings
+
+On Fedora Sway Atomic, use the graphical Sway Input Configurator instead of
+layering a system package with `rpm-ostree`:
+
+```bash
+flatpak install flathub io.github.Sunderland93.sway-input-config
+flatpak run io.github.Sunderland93.sway-input-config
+```
+
+It configures Sway's libinput settings for touchpad tapping, natural
+scrolling, disable-while-typing, click method, pointer acceleration, and
+related options. This is a user-level Flatpak and does not require an
+`rpm-ostree` deployment or reboot. Reload Sway after saving if necessary:
+
+```bash
+swaymsg reload
+```
+
+The GUI is optional; hand-written Sway input settings belong in the user's
+Sway configuration rather than in the immutable image.
+
 Image-level changes (packages, system Sway defaults, Rofi theme) live in
 [`fedora-build`](https://github.com/richardrh/fedora-wayblue), not here.
 Publish that image and run `sudo rpm-ostree upgrade`, then reboot on Fedora.
