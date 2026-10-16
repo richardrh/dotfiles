@@ -1,0 +1,9 @@
+@import url("/etc/xdg/waybar/style.css");
+
+/* Keep the system bar, but hide the centered Sway window title. */
+#window {
+    color: transparent;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+}
