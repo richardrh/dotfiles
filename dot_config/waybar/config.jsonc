@@ -1,0 +1,5 @@
+// Keep the system Waybar layout, but remove its centered Sway window-title module.
+{
+    "include": ["/etc/xdg/waybar/config.jsonc"],
+    "modules-center": []
+}
