@@ -1,0 +1,42 @@
+# Starship prompt configuration
+add_newline = true
+command_timeout = 1000
+
+format = """
+$directory$git_branch$git_status$fill$cmd_duration$line_break$character"""
+
+[directory]
+style = "bold blue"
+truncation_length = 3
+truncate_to_repo = false
+
+[git_branch]
+format = " [$symbol$branch]($style)"
+symbol = " "
+style = "bold purple"
+
+[git_status]
+format = ' ([\[$all_status$ahead_behind\]]($style))'
+style = "bold yellow"
+conflicted = "=${count}"
+untracked = "?${count}"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+
+[fill]
+symbol = " "
+
+[cmd_duration]
+min_time = 2_000
+format = " [$duration]($style)"
+style = "dimmed white"
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"

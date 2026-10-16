@@ -26,3 +26,7 @@ HISTCONTROL=ignoreboth:erasedups
 HISTSIZE=10000
 HISTFILESIZE=20000
 shopt -s histappend
+if command -v starship >/dev/null 2>&1; then
+    eval "$(starship init bash)"
+fi
+alias k='kubectl'
