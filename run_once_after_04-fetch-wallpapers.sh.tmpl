@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Rotating wallpapers for Noctalia ([wallpaper] directory in noctalia/config.toml).
+# Images come from github.com/dharmx/walls; only large (>900 KB) ones from
+# scenic categories are kept.
+dest="$HOME/Pictures/Wallpapers"
+count=80
+mkdir -p "$dest"
+if [[ $(find "$dest" -maxdepth 1 -type f | wc -l) -ge $count ]]; then
+    exit 0
+fi
+
+curl -fsSL https://api.github.com/repos/dharmx/walls/git/trees/main?recursive=1 |
+    jq -r '.tree[]
+        | select(.type == "blob" and .size > 900000)
+        | select(.path | test("^(nature|mountain|aerial|abstract|fogsmoke|calm|cold|digital)/.*\\.(jpe?g|png)$"; "i"))
+        | .path' |
+    shuf -n "$count" |
+    while read -r path; do
+        out="$dest/$(tr '/ ' '--' <<<"$path")"
+        [[ -s $out ]] || curl -fsSL -o "$out" "https://raw.githubusercontent.com/dharmx/walls/main/${path// /%20}" || rm -f "$out"
+    done
