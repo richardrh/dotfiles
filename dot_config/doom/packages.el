@@ -65,3 +65,6 @@
            :branch "master"))
 
 (package! slime)
+
+;; Kanagawa colour scheme (variants: kanagawa-wave, kanagawa-dragon, kanagawa-lotus).
+(package! kanagawa-themes)
