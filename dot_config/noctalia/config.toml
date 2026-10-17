@@ -1,0 +1,32 @@
+# Noctalia user config. Hot-reloaded. Reference: https://docs.noctalia.dev/noctalia/
+# Defaults: https://github.com/noctalia-dev/noctalia/blob/main/example.toml
+
+[shell]
+panel_anchor_bar = "main"
+
+[bar.main]
+position       = "top"
+thickness      = 30
+radius         = 0
+margin_ends    = 0      # default 180 eats ~30% of the 1152px logical width at scale 2.5
+margin_edge    = 0
+padding        = 10
+widget_spacing = 4
+reserve_space  = true
+capsule        = false
+
+start  = ["launcher", "workspaces"]
+center = ["clock"]
+end    = ["media", "tray", "network", "bluetooth", "volume", "brightness", "battery", "notifications", "control-center", "session"]
+
+[wallpaper]
+enabled   = true
+fill_mode = "crop"
+directory = "~/Pictures/Wallpapers"
+transition_duration = 1500
+
+[wallpaper.automation]
+enabled          = true
+interval_seconds = 900
+order            = "random"
+recursive        = true
