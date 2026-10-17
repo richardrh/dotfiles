@@ -36,11 +36,6 @@ auto-format = true
 language-servers = ["gopls"]
 
 [[language]]
-name = "java"
-auto-format = true
-language-servers = ["jdtls"]
-
-[[language]]
 name = "c-sharp"
 auto-format = true
 language-servers = ["csharp-ls"]
