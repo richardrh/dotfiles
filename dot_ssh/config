@@ -3,3 +3,10 @@ Host github.com gitlab.com
     IdentityFile ~/.ssh/id_ed25519
     IdentitiesOnly yes
     AddKeysToAgent yes
+
+Host ovhvps
+    HostName ovhvps
+    User debian
+    Port 55555
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
