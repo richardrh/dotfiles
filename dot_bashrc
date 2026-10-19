@@ -1,6 +1,12 @@
 # User paths must precede system paths.
 export PATH="$HOME/.local/bin:$HOME/.config/emacs/bin:$PATH"
 
+# k3d needs the host socket path as well as Podman's Docker API endpoint.
+export DOCKER_HOST="${DOCKER_HOST:-unix://${XDG_RUNTIME_DIR:-/run/user/$UID}/podman/podman.sock}"
+if [[ "$DOCKER_HOST" == unix://* ]]; then
+    export DOCKER_SOCK="${DOCKER_HOST#unix://}"
+fi
+
 case $- in
     *i*) ;;
     *) return ;;

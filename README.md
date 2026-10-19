@@ -14,13 +14,17 @@ configuration. The `run_once_after_03-install-nerd-font.sh.tmpl` script
 ensures JetBrainsMono Nerd Font is available. The
 `run_onchange_after_05-install-doom.sh.tmpl` script initializes Doom, and
 `run_onchange_after_10-install-mise-tools.sh.tmpl` installs all mise-managed
-tools, including Oh My Pi and Herdr, after the configuration files are applied.
+tools, including Oh My Pi, Herdr, and Hugo, after the configuration files are applied.
 On the Fedora image, the first-login `workstation-setup` terminal configures
 SSH, interactively runs `gh auth login` and `glab auth login`, registers the
 public key with both services, and runs `sudo tailscale up`. It creates
 `~/.ssh/id_ed25519` only when requested; the SSH key's passphrase is entered
 interactively and the private key stays on the machine. Run `workstation-setup`
 again later to repeat any skipped step.
+
+The shell defaults `DOCKER_HOST` to the rootless Podman socket and derives
+`DOCKER_SOCK` from Unix endpoints so k3d can mount the host socket. An existing
+`DOCKER_HOST` override is preserved.
 
 Preview and apply later changes with:
 
