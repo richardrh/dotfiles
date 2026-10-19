@@ -47,6 +47,30 @@ chezmoi apply
 apply, run `chezmoi update`. The image's chezmoi user services also update
 dotfiles automatically.
 
+### Sway browser headers
+
+`dot_config/sway/config.d/99-browser-layout.conf` installs a user override
+loaded by Fedora Sway Atomic's default configuration. New Chromium, Chrome,
+Firefox, Brave, and Edge windows use horizontal split tiling with a 2-pixel
+border instead of a Sway titlebar, matching both Wayland app IDs and XWayland
+classes.
+
+Apply the dotfiles and reload Sway to enable the rules:
+
+```bash
+chezmoi apply
+swaymsg reload
+```
+
+For an already-open browser, focus it and press **Super+E** to return to split
+tiling, or run `swaymsg 'layout splith; border pixel 2'` with that window focused.
+Pixel borders alone do not hide a tabbed/stacked container's header.
+
+Opening a matching browser changes its containing group's layout, including
+any sibling windows. These are opening rules, not a ban on tabbed/stacked
+layouts: choosing **Super+W** or **Super+S** afterward brings Sway's header back.
+Browser tabs and the desktop status bar are unchanged.
+
 ### Sway touchpad settings
 
 On Fedora Sway Atomic, use the graphical Sway Input Configurator instead of
