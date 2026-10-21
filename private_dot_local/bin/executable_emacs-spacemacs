@@ -1,4 +1,0 @@
-#!/bin/sh
-set -eu
-export SPACEMACSDIR="${SPACEMACSDIR:-$HOME/.config/spacemacs}"
-exec emacs --init-directory="$HOME/.local/share/spacemacs" "$@"

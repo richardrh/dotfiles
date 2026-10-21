@@ -191,6 +191,3 @@
 (setq! inferior-lisp-program
        (or (executable-find "sbcl")
            "sbcl"))
-
-(after! slime
-  (setq slime-contribs '(slime-fancy slime-asdf)))

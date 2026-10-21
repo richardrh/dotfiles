@@ -64,7 +64,8 @@
            :files ("etc/gerbil-mode.el")
            :branch "master"))
 
-(package! slime)
+;; Quicklisp is not installed; its SLY add-on otherwise interrupts REPL startup.
+(package! sly-quicklisp :disable t)
 
 ;; Kanagawa colour scheme (variants: kanagawa-wave, kanagawa-dragon, kanagawa-lotus).
 (package! kanagawa-themes)

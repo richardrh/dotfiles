@@ -47,6 +47,32 @@ chezmoi apply
 apply, run `chezmoi update`. The image's chezmoi user services also update
 dotfiles automatically.
 
+### Editors
+
+Doom is the managed Emacs configuration. Its Common Lisp module uses SLY with
+SBCL; the SLY Quicklisp add-on is disabled because Quicklisp is not installed.
+Spacemacs configurations and the `emacs-spacemacs` launcher are no longer
+managed. Removing them from this repository prevents fresh installs from
+recreating them, but does not delete existing copies or local backups on
+other machines.
+
+### Sway desktop overrides
+
+Noctalia provides the desktop shell. Keep the comment-only `60-bindings-dms.conf`
+and `95-dms.conf` files: Fedora's layered Sway configuration uses same-name user
+files to suppress image-provided DMS bindings and autostart. `90-bar.conf`
+likewise suppresses Sway's Waybar launcher. The current workstation also masks
+the Waybar user service; that service mask is machine-local, not managed here.
+The Waybar configuration remains available as a fallback.
+
+Each shared setting has one authoritative file under `dot_config/sway/config.d/`:
+
+- `99-gapless.conf`: zero inner and outer gaps.
+- `99-display.conf`: output scale 2.5.
+- `99-input.conf`: touchpad acceleration 0.3 and natural scrolling.
+- `99-local.conf`: border styling and layout bindings, without duplicating the
+  gap, scale, or input settings.
+
 ### Sway browser headers
 
 `dot_config/sway/config.d/99-browser-layout.conf` installs a user override
@@ -68,10 +94,21 @@ Pixel borders alone do not hide a tabbed/stacked container's header.
 
 Opening a matching browser changes its containing group's layout, including
 any sibling windows. These are opening rules, not a ban on tabbed/stacked
-layouts: choosing **Super+W** or **Super+S** afterward brings Sway's header back.
+layouts: selecting those layouts manually brings Sway's header back.
+The stock **Super+W** and **Super+S** bindings are disabled in `99-local.conf`.
 Browser tabs and the desktop status bar are unchanged.
 
 ### Sway touchpad settings
+
+Edit `~/.config/sway/config.d/99-input.conf` for touchpad settings, then reload
+Sway. Capture deliberate local changes in the source repository before pushing:
+
+```bash
+chezmoi re-add ~/.config/sway/config.d/99-input.conf
+```
+
+Avoid duplicating the touchpad block in a later snippet, which would override
+these settings.
 
 On Fedora Sway Atomic, use the graphical Sway Input Configurator instead of
 layering a system package with `rpm-ostree`:
