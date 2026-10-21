@@ -9,7 +9,7 @@ BlueBuild's `chezmoi` module. To install it manually:
 chezmoi init --apply git@github.com:richardrh/dotfiles.git
 ```
 
-Chezmoi applies the shell, Git, Doom Emacs, Ghostty, Helix, and mise
+Chezmoi applies the shell, Git, Doom Emacs, Ghostty, Helix, Mitos, and mise
 configuration. The `run_once_after_03-install-nerd-font.sh.tmpl` script
 ensures JetBrainsMono Nerd Font is available. The
 `run_onchange_after_05-install-doom.sh.tmpl` script initializes Doom, and
@@ -55,6 +55,11 @@ Spacemacs configurations and the `emacs-spacemacs` launcher are no longer
 managed. Removing them from this repository prevents fresh installs from
 recreating them, but does not delete existing copies or local backups on
 other machines.
+
+Mitos uses Tokyo Night, relative line numbers, a bar cursor in insert mode,
+and **Ctrl+S** to save from normal mode. Its configuration lives in
+`dot_config/mitos/config.toml`; the editor binary is installed separately, and
+its machine-local, version-specific `ms` launcher symlink is not managed here.
 
 ### Sway desktop overrides
 
