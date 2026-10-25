@@ -36,3 +36,6 @@ if command -v starship >/dev/null 2>&1; then
     eval "$(starship init bash)"
 fi
 alias k='kubectl'
+
+# Terminal Emacs frame on the systemd user daemon (emacs.service); starts one if it isn't running.
+alias e='emacsclient -t -a ""'

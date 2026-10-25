@@ -58,6 +58,9 @@
            :files ("misc/gambit.el")
            :branch "master"))
 
+;; Geiser's backend and Gambit's own Emacs support are different repositories.
+(package! geiser-gambit :recipe (:local-repo "geiser-gambit"))
+
 (package! gerbil-mode
   :recipe (:host github
            :repo "mighty-gerbils/gerbil"
@@ -69,3 +72,8 @@
 
 ;; Kanagawa colour scheme (variants: kanagawa-wave, kanagawa-dragon, kanagawa-lotus).
 (package! kanagawa-themes)
+
+;; Typst editing, compilation and watch mode.
+(package! typst-ts-mode
+  :recipe (:host codeberg :repo "meow_king/typst-ts-mode" :branch "main")
+  :pin "278562d702de429f5c4369c007913ca0ef1584f3")

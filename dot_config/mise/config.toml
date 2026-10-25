@@ -1,6 +1,6 @@
 [tools]
-dart = { version = "latest", checksum_url = "https://storage.googleapis.com/dart-archive/channels/stable/release/{{`{{ version }}`}}/sdk/dartsdk-{{`{{ os() }}`}}-{{`{{ arch() }}`}}-release.zip.sha256sum", url = "https://storage.googleapis.com/dart-archive/channels/stable/release/{{`{{ version }}`}}/sdk/dartsdk-{{`{{ os() }}`}}-{{`{{ arch() }}`}}-release.zip", version_expr = 'fromJSON(body).prefixes | filter({ # matches "^channels/stable/release/(\\d+\\.\\d+\\.\\d+)/$" }) | map({split(#, "/")[3]}) | sortVersions()', version_list_url = "https://storage.googleapis.com/storage/v1/b/dart-archive/o?prefix=channels/stable/release/&delimiter=/" }
-go = "1.27.0"
+dart = { version = "latest", checksum_url = "https://storage.googleapis.com/dart-archive/channels/stable/release/{{ version }}/sdk/dartsdk-{{ os() }}-{{ arch() }}-release.zip.sha256sum", url = "https://storage.googleapis.com/dart-archive/channels/stable/release/{{ version }}/sdk/dartsdk-{{ os() }}-{{ arch() }}-release.zip", version_expr = 'fromJSON(body).prefixes | filter({ # matches "^channels/stable/release/(\\d+\\.\\d+\\.\\d+)/$" }) | map({split(#, "/")[3]}) | sortVersions()', version_list_url = "https://storage.googleapis.com/storage/v1/b/dart-archive/o?prefix=channels/stable/release/&delimiter=/" }
+go = "latest"
 rust = "stable"
 python = "3.14"
 uv = "latest"
@@ -13,7 +13,7 @@ helm = "latest"
 kustomize = "latest"
 k9s = "latest"
 # k3d is supplied by the image's Podman-aware wrapper, not a mise shim.
-kubectl = "1.36.3"
+kubectl = "latest"
 duckdb = "latest"
 kopia = "latest"
 sops = "latest"
@@ -36,6 +36,15 @@ ruff = "latest"
 "dotnet:csharp-ls" = "latest"
 lazygit = "0.66.2"
 hugo = "latest"
+typst = "0.15.1"
+tinymist = "0.15.10"
+odin = "dev-2026-10"
+ols = { version = "dev-2026-10", rename_exe = { "odinfmt-*" = "odinfmt", "ols-*" = "ols" } }
+racket = "9.3"
+nu = "latest"
+janet = "latest"
+bitwarden = "latest"
+yazi = "latest"
 
 [settings.npm]
 package_manager = "pnpm"

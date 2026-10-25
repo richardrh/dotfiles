@@ -34,7 +34,9 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'kanagawa-wave)
 
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 12.0))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 12.0)
+      doom-variable-pitch-font (font-spec :family "Noto Sans" :size 12.0)
+      doom-symbol-font (font-spec :family "Symbols Nerd Font Mono"))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -55,7 +57,9 @@
 ;; Doom's archived Dart grammar fork is incompatible with dart-ts-mode.
 (after! treesit
   (setf (alist-get 'dart treesit-language-source-alist)
-        '("https://github.com/UserNobody14/tree-sitter-dart")))
+        '("https://github.com/UserNobody14/tree-sitter-dart"))
+  (setf (alist-get 'typst treesit-language-source-alist)
+        '("https://github.com/Ziqi-Yang/tree-sitter-typst")))
 
 ;; Use the mise-managed TypeScript compiler when a project has no local copy.
 (after! eglot
@@ -108,6 +112,16 @@
     (force-mode-line-update t)))
 (add-hook 'server-after-make-frame-hook #'my/refresh-doom-client-frame-ui t)
 
+;; Generic .scm files use Gambit/Geiser; .ss and .pkg use Gerbil.
+;; Make cmuscheme's command buffer-local before gerbil-mode assigns it.
+(after! cmuscheme
+  (make-variable-buffer-local 'scheme-program-name)
+  (setq-default scheme-program-name "gsi -:d-"))
+
+(after! geiser
+  (setq geiser-active-implementations '(gambit)
+        geiser-default-implementation 'gambit))
+
 ;; Gerbil source files use gerbil-mode for Gerbil-aware font-lock and
 ;; indentation.  The LSP hookup is intentionally optional: Gerbil 0.18
 ;; ships no LSP server, but this becomes active as soon as `gerbil-lsp` (or
@@ -116,11 +130,33 @@
   :mode (("\\.ss\\'" . gerbil-mode)
          ("\\.pkg\\'" . gerbil-mode))
   :init
-  (setq scheme-program-name (or (executable-find "gxi") "gxi")
-        gerbil-program-name scheme-program-name)
+  (setq gerbil-program-name "gxi")
+  (defun my/gerbil-repl ()
+    "Open Gerbil's REPL, separate from Gambit's Geiser REPL."
+    (interactive)
+    (run-scheme gerbil-program-name))
+  (defun my/gerbil-send-buffer (&optional and-go)
+    "Evaluate the current Gerbil buffer, optionally selecting its REPL."
+    (interactive "P")
+    (scheme-send-region (point-min) (point-max))
+    (when and-go (switch-to-scheme t)))
   :config
+  (set-repl-handler! 'gerbil-mode #'my/gerbil-repl
+    :persist t
+    :send-region #'scheme-send-region
+    :send-buffer #'my/gerbil-send-buffer)
+  (set-eval-handler! 'gerbil-mode #'scheme-send-region)
   (map! :map gerbil-mode-map
         :localleader
+        :desc "Gerbil REPL" "'" #'my/gerbil-repl
+        (:prefix ("e" . "evaluate")
+         "b" #'my/gerbil-send-buffer
+         "B" (cmd! (my/gerbil-send-buffer t))
+         "e" #'scheme-send-last-sexp
+         "d" #'scheme-send-definition
+         "D" #'scheme-send-definition-and-go
+         "r" #'scheme-send-region
+         "R" #'scheme-send-region-and-go)
         :prefix ("l" . "language server")
         "a" #'eglot-code-actions
         "d" #'eglot-find-declaration
@@ -133,7 +169,7 @@
 (use-package! gambit
   :hook (inferior-scheme-mode . gambit-inferior-mode))
 
-;; Eglot's font probes must run after the initial macOS GUI frame is ready.
+;; Optional Gerbil LSP; REPL support does not depend on a language server.
 (use-package! eglot
   :defer t
   :init
@@ -151,11 +187,97 @@
   (add-to-list 'eglot-server-programs
                `(gerbil-mode . ,my/gerbil-lsp-command)))
 
+;; Typst: use the project root for shared YAML and other files outside resume/.
+(use-package! typst-ts-mode
+  :mode "\\.typ\\'"
+  :hook (typst-ts-mode . my/typst-setup)
+  :init
+  (defun my/typst-setup ()
+    "Configure project-aware Typst compilation and start Eglot."
+    (when-let* ((project (project-current nil))
+                (root (project-root project)))
+      (setq-local typst-ts-compile-options
+                  (concat "--root " (shell-quote-argument root))
+                  typst-ts-watch-options (list "--root" root)
+                  eglot-workspace-configuration
+                  `(:tinymist (:rootPath ,root))))
+    (eglot-ensure))
+  :config
+  ;; Open the PDF in its own viewer session, independent of browsers and Emacs.
+  (setq typst-ts-preview-function
+        (lambda (file)
+          (start-process
+           "Typst PDF preview" "*Typst PDF preview*"
+           "setsid" "-f" "flatpak" "run" "--user" "--file-forwarding"
+           "org.gnome.Papers" "@@" file "@@")))
+  (map! :map typst-ts-mode-map
+        :localleader
+        :desc "Compile PDF" "c" #'typst-ts-compile
+        :desc "Compile and preview PDF" "p" #'typst-ts-compile-and-preview
+        :desc "Watch and rebuild PDF" "w" #'typst-ts-watch-mode
+        :desc "Format Typst" "f" #'eglot-format))
+
+(after! eglot
+  (add-to-list 'eglot-server-programs '(typst-ts-mode . ("tinymist"))))
+
 ;; Render Markdown inside Emacs with EWW; refresh the preview on save.
 (after! markdown-mode
   (map! :map markdown-mode-map
         :localleader
         :desc "Preview in Emacs" "P" #'markdown-live-preview-mode))
+
+;; Forge reuses glab's existing GitLab credential; no second token file.
+(after! auth-source
+  (defun my/gitlab-forge-secret ()
+    "Retrieve the existing GitLab token without exposing process output."
+    (with-temp-buffer
+      (let ((status (call-process "glab" nil (list t nil) nil
+                                  "config" "get" "token"
+                                  "--host" "gitlab.com")))
+        (unless (eq status 0)
+          (error "Cannot retrieve GitLab credential from glab"))
+        (let ((token (string-trim (buffer-string))))
+          (when (string-empty-p token)
+            (error "glab has no stored token for gitlab.com"))
+          token))))
+
+  (cl-defun my/gitlab-forge-auth-search
+      (&key host user port max &allow-other-keys)
+    "Supply glab credentials only for this GitLab Forge account."
+    (when (and (member host '("gitlab.com" "gitlab.com/api/v4"))
+               (equal user "richardrh^forge")
+               (or (null max) (> max 0)))
+      (list (list :host host :user user :port port
+                  :secret #'my/gitlab-forge-secret))))
+
+  (defun my/gitlab-forge-auth-backend (entry)
+    "Recognize the dedicated glab auth-source ENTRY."
+    (when (eq entry 'my/gitlab-forge)
+      (auth-source-backend
+       :source "glab:gitlab.com"
+       :type 'my/gitlab-forge
+       :search-function #'my/gitlab-forge-auth-search)))
+
+  (add-hook 'auth-source-backend-parser-functions
+            #'my/gitlab-forge-auth-backend)
+  (add-to-list 'auth-sources 'my/gitlab-forge)
+  (auth-source-forget-all-cached))
+
+;; GitLab returned burst_traffic_per_user_free_plan (100 requests/minute).
+;; Pace requests, including pagination, so a full Forge import can finish.
+(after! ghub
+  (defvar my/gitlab-last-request-time 0)
+
+  (defun my/gitlab-pace-request (_payload req)
+    "Keep GitLab.com requests at least one second apart."
+    (when (equal (url-host (ghub--req-url req)) "gitlab.com")
+      ;; Recheck after sleeping because process callbacks can run meanwhile.
+      (while (< (- (float-time) my/gitlab-last-request-time) 1.0)
+        (sleep-for (max 0.01 (- 1.0 (- (float-time)
+                                      my/gitlab-last-request-time)))))
+      (setq my/gitlab-last-request-time (float-time))))
+
+  (advice-add 'ghub--retrieve :before #'my/gitlab-pace-request))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -188,6 +310,8 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+;; SBCL uses SLY; its stepper dependency lives in ~/common-lisp/agnostic-lizard,
+;; which ASDF discovers automatically (no Quicklisp startup required).
 (setq! inferior-lisp-program
        (or (executable-find "sbcl")
            "sbcl"))

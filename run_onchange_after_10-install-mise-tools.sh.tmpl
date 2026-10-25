@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Re-run when the mise source configuration changes.
-# config hash: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
+# config hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
 export MISE_FETCH_REMOTE_VERSIONS_TIMEOUT=30
 if [[ -z "${GITHUB_TOKEN:-}" ]] &&
    command -v gh >/dev/null 2>&1 &&

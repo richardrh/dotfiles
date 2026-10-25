@@ -1,0 +1,7 @@
+// Left Ctrl -> Escape; Caps Lock -> Left Ctrl
+partial modifier_keys
+xkb_symbols "basic" {
+    replace key <LCTL> { [ Escape ] };
+    replace key <CAPS> { [ Control_L ] };
+    modifier_map Control { <CAPS> };
+};

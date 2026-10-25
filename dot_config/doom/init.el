@@ -43,7 +43,7 @@
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
-       ;;smooth-scroll     ; So smooth you won't believe it's not butter
+       smooth-scroll     ; So smooth you won't believe it's not butter
        ;;tabs              ; a tab bar for Emacs
        ;;treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
@@ -102,7 +102,7 @@
        lookup              ; navigate your code and its documentation
        ;;llm               ; when I said you needed friends, I didn't mean...
        (lsp +eglot)        ; M-x vscode
-       magit             ; a git porcelain for Emacs
+       (magit +forge)    ; a git porcelain for Emacs, with GitLab issues and MRs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
        ;;pdf               ; pdf enhancements
@@ -119,7 +119,7 @@
        ;;ada               ; In strong typing we (blindly) trust
        ;;(agda +local)     ; types of types of types of types...
        ;;beancount         ; mind the GAAP
-       ;;(cc +lsp)         ; C > C++ == 1
+       (cc +lsp)         ; C/C++ editing and clangd via Eglot
        common-lisp         ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
@@ -155,7 +155,7 @@
        ;;nim               ; python + lisp at the speed of c
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       ;;odin              ; C, minus its footguns
+       (odin +lsp +tree-sitter) ; Odin tree-sitter highlighting/indentation, OLS via Eglot
        org               ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
@@ -163,7 +163,7 @@
        ;;purescript        ; javascript, but functional
        (python +lsp +tree-sitter) ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
-       ;;racket            ; a DSL for DSLs
+       (racket +xp)      ; Racket REPL, expansion, completion, and navigation
        ;;raku              ; the artist formerly known as perl6
        ;;rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
@@ -171,7 +171,7 @@
        (rust +lsp +tree-sitter) ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scad              ; trust the preview, regret the render
        ;;scala             ; java, but good
-       scheme            ; Gerbil/Scheme editing and REPL support
+       (scheme +gambit)  ; Scheme/Gambit via Geiser; Gerbil uses its own REPL
        sh                ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
